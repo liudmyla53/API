@@ -1,0 +1,9 @@
+
+body{
+   background: url('./assets/images/marten.jpg') no-repeat center/100%; 
+
+}
+img{
+ width: 25%;
+ text-align: center;
+}
