@@ -1,5 +1,5 @@
 import { useParams } from "react-router";
-import { getDestinationDetailPageInfo} from "../../services/DestinationService";
+import { getDestinationComments, getDestinationDetailPageInfo} from "../../services/DestinationService";
 import { Suspense, use} from "react";
 import CommentListAndForm from "./CommentListAndForm";
 
@@ -7,20 +7,22 @@ import CommentListAndForm from "./CommentListAndForm";
 
  export default function DestinationDetailPage() {
     const { id } = useParams();
-    const promise = getDestinationDetailPageInfo(id);
+    const destinationPromise = getDestinationDetailPageInfo(id);
+    const commentsPromise=getDestinationComments(id);
     return (
         <>
             <Suspense fallback={<div>⏳</div>}>
-                <DestinationDetailPageContent detailPromise={promise} />
+                <DestinationDetailPageContent destinationPromise={destinationPromise}
+                commentsPromise={commentsPromise} />
             </Suspense>
 
         </>
     )}
 
- function DestinationDetailPageContent({ detailPromise }) {
+ function DestinationDetailPageContent({destinationPromise, commentsPromise}) {
         
-        const destination = use(detailPromise);
-        
+        const destination = use(destinationPromise);
+        const comments = use(commentsPromise);
         
         return <div>
             <h2>{destination.name} ({destination.country})</h2>
@@ -32,7 +34,7 @@ import CommentListAndForm from "./CommentListAndForm";
                 
                <CommentListAndForm
                     destinationId={destination.id}
-                    initialComments={destination.comments}
+                    initialComments={comments}
               />
            
            
