@@ -6,9 +6,13 @@ function selectLang(elem) {
 }
 
 
-export async function getDestinationPageInfo() {
-
-    const { data } = await axios.get(`api/destination/`, {
+export async function getDestinationPageInfo(limit=5,offset=0) {
+   
+   const params=new URLSearchParams({
+    limit: limit,
+    offset: offset
+   }).toString();
+    const { data } = await axios.get(`api/destination?${params}`, {
         baseURL: 'http://localhost:8080/'
     });
 

@@ -1,12 +1,14 @@
 //import { useEffect, useState } from "react"
-import { Suspense,use } from "react";
+import { Suspense,use, useState } from "react";
 import { getDestinationPageInfo } from "../../services/DestinationService";
 import { Link } from "react-router";
 
 export default function DestinationPageRequester() {
-
-    const promise = getDestinationPageInfo();
-
+    const LIMIT=5;
+    const [offset,setOffset]=useState(0);
+    const promise = getDestinationPageInfo(LIMIT,offset);
+    const goToNextPage=()=>{setOffset(prevOffset=>prevOffset+LIMIT)};
+    const goToPrevPage=()=>{setOffset(prevOffset=>Math.max(0,prevOffset-LIMIT));};
     return (
         <>
             <div>
@@ -17,6 +19,20 @@ export default function DestinationPageRequester() {
             <Suspense fallback = {<DestinationPageLoading/>}>
               <DestinationPage destinationPromise={promise} />
             </Suspense>
+            <div style={{ marginTop: '20px' }}>
+                <button 
+                        onClick={goToPrevPage}
+                        disabled={offset === 0} 
+                    >
+
+                    </button>
+                    <button 
+                        onClick={goToNextPage}
+                        
+                    >
+                        
+                    </button>
+            </div>
             </div>
            
         </>

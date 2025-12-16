@@ -6,6 +6,7 @@ export default function CommentListAndForm({ destinationId, initialComments= []}
     const [comments, setComments] = useState(initialComments);
     const [author, setAuthor] = useState('');
     const [message, setMessage] = useState('');
+    const [showComments, setShowComments]=useState(false);
 
     async function handleSubmit(e) {
         e.preventDefault()
@@ -22,18 +23,29 @@ export default function CommentListAndForm({ destinationId, initialComments= []}
     }
     return (
         <>
-            <h3>Commentaire: {comments.length}</h3>
-            {
-                comments.length === 0 ? (<p>Soyez le premier à commenter !</p>) : (
-                    <ul>
-                        {comments.map(c => (
-                            <li key={c.id}>
-                                {c.author}: {c.message}
-                            </li>
-                        ))}
-                    </ul>
-                )
-            } 
+            
+            <button onClick={() => setShowComments(prev => !prev)}>
+                {showComments ? 'Hide comments' : `Show comments (${comments.length})`}
+            </button>
+        
+           
+            {showComments && (
+                <>
+                   
+                    {comments.length === 0 ? (
+                        <p>Soyez le premier à commenter !</p>
+                    ) : (
+                        <ul>
+                            {comments.map(c => (
+                                <li key={c.id}>
+                                    {c.author}: {c.message}
+                                </li>
+                            ))}
+                        </ul>
+                    )}
+                </>
+            )}
+           
             <h4>Laisser un commentaire</h4>
             <form onSubmit={handleSubmit}>
                 <input
